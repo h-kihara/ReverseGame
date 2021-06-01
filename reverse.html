@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.cell {
+  width: 80px;
+  height:80px;
+  border:2px solid brown;
+  background-color: green;
+  float:left;
+}
+.circle {
+  width: 70px;
+  height:70px;
+  margin: 5px;
+  border-radius: 50%;
+}
+.white { background-color:white; }
+.black { background-color:black; }
+</style>
+</head>
+<body>
+<div id="field" style="max-width:700px;min-width:700px"></div>
+<script>
+const field = document.getElementById('field');
+const N = 8;
+let TURN = 'white';
+[...Array(N).keys()].forEach(i=>{
+  [...Array(N).keys()].forEach(j=>{
+    const cell = document.createElement('div');
+    cell.onclick = function(e){
+      if(cell.children.length==0) {
+        settable(i,j,TURN);
+        const koma_ = document.createElement('div');
+        koma_.className = "circle "+TURN;
+        cell.appendChild(koma_);
+        TURN = TURN=='white' ? 'black' : 'white';
+      }
+    };
+    cell.className = "cell r"+i+" c"+j;
+    field.appendChild(cell);
+  })
+});
+
+for(var i=3;i<5;i++){
+  // white Initial
+  const w1 = document.getElementsByClassName('r'+i+' c'+i)[0];
+  console.log(w1);
+  const white = document.createElement('div');
+  white.className = "circle white";
+  w1.appendChild(white);
+
+  // Black initial
+  const b1 = document.getElementsByClassName('r'+i+' c'+(7-i))[0];
+  console.log(b1);
+  const black = document.createElement('div');
+  black.className = "circle black";
+  b1.appendChild(black);
+}
+
+function settable(r,c,turn) {
+  for(let i=-1;i<2;i++){
+    for(let j=-1;j<+2;j++){
+      const cell = document.getElementsByClassName('r'+(r+i)+' c'+(c+j))[0];
+      if(cell.children.length>0){
+        if(cell.children[0].classList.contains(turn)) {
+          console.log("FAMILIAR");
+        }else{
+          console.log("AVAILABLE");
+        }
+      }
+    }
+  }
+  console.log("-----");
+}
+
+
+
+
+</script>
+</body>
+</html>
